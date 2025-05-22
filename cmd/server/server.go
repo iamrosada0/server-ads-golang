@@ -1,14 +1,21 @@
-package ads
+package main
 
-import "github.com/valyala/fasthttp"
+import (
+	"log"
+	"simple-ads-server/internal/ads"
 
-type Server struct {
-}
+	"github.com/oschwald/geoip2-golang"
+)
 
-func NewService() *Server {
-	return &Server{}
-}
+func main() {
+	reader, err := geoip2.Open("GeoLite2-Country.mmdb")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-func (s *Server) Listen() error {
-	return fasthttp.ListenAndServe(":8080")
+	s := ads.NewServer(reader)
+
+	if err := s.Listen(); err != nil {
+		log.Fatal(err)
+	}
 }

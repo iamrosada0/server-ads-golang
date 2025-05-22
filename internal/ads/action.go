@@ -115,5 +115,29 @@ func GetStaticCampaigns() []*Campaign {
 			},
 			ClickUrl: "https://duckduckgo.com",
 		},
+		{
+			Price: 0.9,
+			Targeting: Targeting{
+				Country: "AO", // Angola
+				Browser: "Chrome",
+			},
+			ClickUrl: "https://zap.co.ao",
+		},
+		{
+			Price: 1.2,
+			Targeting: Targeting{
+				Country: "BR", // Brasil
+				Browser: "Firefox",
+			},
+			ClickUrl: "https://globo.com",
+		},
+		{
+			Price: 1.1,
+			Targeting: Targeting{
+				Country: "BR", // Brasil
+				Browser: "Chrome",
+			},
+			ClickUrl: "https://uol.com.br",
+		},
 	}
 }

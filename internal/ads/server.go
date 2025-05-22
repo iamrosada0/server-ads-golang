@@ -41,10 +41,20 @@ func (s *Server) handler(ctx *fasthttp.RequestCtx) {
 		Browser: browserName,
 	}
 	campaigns := GetStaticCampaigns()
+	log.Printf("User IP: %s | Country: %s | Browser: %s", remoteIp, country.Country.IsoCode, browserName)
 
 	winner := MakeAuction(campaigns, user)
 	if winner == nil {
 		ctx.Redirect("https://example.com", http.StatusSeeOther)
+		return
+	}
+
+	//  Verificar se o parâmetro ?preview=true foi passado
+	args := ctx.QueryArgs()
+	if args.Has("preview") && string(args.Peek("preview")) == "true" {
+		ctx.SetStatusCode(http.StatusOK)
+		ctx.SetContentType("text/plain")
+		ctx.SetBodyString("Winning URL: " + winner.ClickUrl)
 		return
 	}
 

@@ -49,45 +49,23 @@ func MakeAuction(in []*Campaign, u *User) (winner *Campaign) {
 }
 
 func filterByBrowser(in []*Campaign, u *User) []*Campaign {
-	for i := len(in) - 1; i >= 0; i-- {
-		if len(in[i].Targeting.Browser) == 0 {
-			// Empty browser means no restrictions, so don't remove the campaign
-			continue
+	var out []*Campaign
+	for _, c := range in {
+		if c.Targeting.Browser == "" || c.Targeting.Browser == u.Browser {
+			out = append(out, c)
 		}
-
-		if in[i].Targeting.Browser == u.Browser {
-			// Browser matches – campaign passes
-			continue
-		}
-
-		// At this point we know there's a browser filter, and the user's browser doesn't match it
-		// Remove the campaign
-		in[i] = in[0]
-		in = in[1:]
 	}
-
-	return in
+	return out
 }
 
 func filterByCountry(in []*Campaign, u *User) []*Campaign {
-	for i := len(in) - 1; i >= 0; i-- {
-		if len(in[i].Targeting.Country) == 0 {
-			// Empty country means no restrictions, so don't remove the campaign
-			continue
+	var out []*Campaign
+	for _, c := range in {
+		if c.Targeting.Country == "" || c.Targeting.Country == u.Country {
+			out = append(out, c)
 		}
-
-		if in[i].Targeting.Country == u.Country {
-			// Country matches – campaign passes
-			continue
-		}
-
-		// At this point we know there's a country filter, and the user's country doesn't match it
-		// Remove the campaign
-		in[i] = in[0]
-		in = in[1:]
 	}
-
-	return in
+	return out
 }
 
 func GetStaticCampaigns() []*Campaign {
